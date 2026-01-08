@@ -6,6 +6,7 @@ import com.example.B2BHotelBookingSystem.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,7 @@ public class UserController extends BaseController{
     }
 
     //showing users list with pagination
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String listUsers(
             @RequestParam(defaultValue = "0") int page,
@@ -50,6 +52,7 @@ public class UserController extends BaseController{
     }
 
     //displaying edit form
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         var user = service.findUser(id);
@@ -64,6 +67,7 @@ public class UserController extends BaseController{
     }
 
     //update user
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/update")
     public String updateUser(@Valid @ModelAttribute("userRequest") UpdateUserRequest request,
                              BindingResult result) {
@@ -75,6 +79,7 @@ public class UserController extends BaseController{
     }
 
     //delete user
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         service.deleteUser(id);

@@ -44,7 +44,8 @@ public class UserService {
         User user = User.builder()
                 .username(request.username()).email(request.email())
                 .password(encoder.encode(request.password()))
-                .phone(request.phone()).enabled(request.enabled())
+                .phone(request.phone())
+                .enabled(request.enabled())//if user is registering himself (without token) it should be false(from front) to let the admin accept it, but if has token can be whatever user send
                 .role(Role.valueOf(request.role().toUpperCase()))
                 .agency(request.agencyId() != null ? findAgencyById(request.agencyId()) : null)
                 .hotel(request.hotelId() != null ? findHotelById(request.hotelId()) : null)
@@ -80,11 +81,19 @@ public class UserService {
             throw new DynamicTextException("Username already exists.");
         }
 
+        if (!user.getEmail().equals(request.email()) && repository.existsByEmail(request.email())) {
+            throw new DynamicTextException("Email already exists.");
+        }
+
         user.setUsername(request.username());
         user.setEmail(request.email());
         user.setPhone(request.phone());
         user.setEnabled(request.enabled());
         user.setRole(Role.valueOf(request.role().toUpperCase()));
+
+        if (request.password() != null && !request.password().isBlank()) {
+            user.setPassword(encoder.encode(request.password()));
+        }
 
         // Link logic
         user.setAgency(request.agencyId() != null ? findAgencyById(request.agencyId()) : null);
