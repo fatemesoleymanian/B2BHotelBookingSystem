@@ -1,63 +1,42 @@
 package com.example.B2BHotelBookingSystem.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
+@Entity @Getter @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@SQLDelete(sql = "UPDATE agencies SET deleted_at = NOW() WHERE id = ?")
+@SQLRestriction("deleted_at IS NULL")
 @Table(name = "agencies")
-public class Agency {
+public class Agency extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agency_gen")
     @SequenceGenerator(name = "agency_gen", sequenceName = "agency_seq", allocationSize = 1)
     private Long id;
+
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @Column(length = 255)
     private String address;
+
+    @Column(nullable = false, length = 50, name = "city_name")
+    private String cityName;
+
+    @Column(length = 15)
     private String tel;
 
-    @ManyToMany
-    private Set<Rate> rates = new HashSet<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-    public Set<Rate> getRates() {
-        return rates;
-    }
-
-    public void addRate(Rate rate) {
-        this.rates.add(rate);
-        rate.getAgencies().add(this);
-    }
-
-    public void removeRate(Rate rate) {
-        this.rates.remove(rate);
-        rate.setAgencies(null);
-    }
-
+    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> users = new ArrayList<>();
 }

@@ -1,66 +1,82 @@
-package com.example.demo.services;
+package com.example.B2BHotelBookingSystem.services;
 
-import com.example.B2BHotelBookingSystem.dtos.HotelCreateDTO;
-import com.example.B2BHotelBookingSystem.dtos.HotelDTO;
-import com.example.B2BHotelBookingSystem.dtos.HotelUpdateDTO;
-import com.example.demo.models.Hotel;
-import com.example.demo.repositories.HotelRepository;
-import org.springframework.http.HttpStatus;
+import com.example.B2BHotelBookingSystem.config.exceptions.NotFoundException;
+import com.example.B2BHotelBookingSystem.dtos.CreateHotelRequest;
+import com.example.B2BHotelBookingSystem.dtos.HotelResponse;
+import com.example.B2BHotelBookingSystem.dtos.UpdateHotelRequest;
+import com.example.B2BHotelBookingSystem.models.Hotel;
+import com.example.B2BHotelBookingSystem.repositories.HotelRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class HotelService {
     private final HotelRepository repository;
 
-    public HotelService(HotelRepository repository){
-        this.repository = repository;
+    @Transactional(readOnly = true)
+    public List<HotelResponse> getAllHotels(){
+        List<Hotel> hotels = repository.findAll();
+        return hotels.stream().map(HotelResponse::fromEntity).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<HotelDTO> getAllHotels(){
-
-        return repository.findAll().stream()
-                .map(h -> mapToHotelDTo(h))
-                .toList();
+    public Page<HotelResponse> findAllPaginated(Pageable pageable){
+        return repository.findAll(pageable).map(HotelResponse::fromEntity);
     }
 
-    public HotelDTO createHotel(HotelCreateDTO hotelCreateDTO){
-        Hotel hotel = new Hotel();
-        hotel.setName(hotelCreateDTO.name());
-        hotel.setStar(hotelCreateDTO.star());
-        hotel.setAddress(hotelCreateDTO.address());
-        hotel.setTel(hotelCreateDTO.tel());
+    @Transactional(readOnly = true)
 
-        Hotel saved = repository.save(hotel);
-        return mapToHotelDTo(saved);
+    public Page<HotelResponse> findAllPaginatedByCity(String cityName, Pageable pageable) {
+        return repository.findByCityNameContainingIgnoreCase(cityName,pageable).map(HotelResponse::fromEntity);
+    }
+
+    public HotelResponse createHotel(CreateHotelRequest request){
+
+        Hotel hotel = Hotel.builder()
+                .name(request.name()).cityName(request.cityName())
+                .address(request.address()).star(request.star())
+                .tel(request.tel()).build();
+
+        return mapToHotelDTo(repository.save(hotel));
+    }
+
+    public HotelResponse findHotel(Long id){
+        Hotel hotel = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(id, "Hotel "));
+        return HotelResponse.fromEntity(hotel);
     }
 
     public void deleteHotel(Long id){
-        if(!repository.findById(id).isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found");
-        }
-        repository.deleteById(id);
-    }
-
-    public HotelDTO updateHotel(Long id, HotelUpdateDTO hotelUpdateDTO){
         Hotel hotel = repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Hotel not found"));
-
-        hotel.setName(hotelUpdateDTO.name());
-        hotel.setStar(hotelUpdateDTO.star());
-        hotel.setAddress(hotelUpdateDTO.address());
-        hotel.setTel(hotelUpdateDTO.tel());
-
-        Hotel updated = repository.save(hotel);
-        return mapToHotelDTo(updated);
+                .orElseThrow(() -> new NotFoundException(id, "Hotel "));
+        repository.deleteById(hotel.getId());
     }
 
-    private HotelDTO mapToHotelDTo(Hotel hotel){
-        return new HotelDTO(hotel.getId(), hotel.getName(), hotel.getAddress(), hotel.getStar(), hotel.getTel());
+    @Transactional
+    public HotelResponse updateHotel(UpdateHotelRequest request){
+        Hotel hotel = repository.findById(request.id())
+                .orElseThrow(() -> new NotFoundException(request.id(), "Hotel "));
+
+        hotel.setName(request.name());
+        hotel.setStar(request.star());
+        hotel.setAddress(request.address());
+        hotel.setCityName(request.cityName());
+        hotel.setTel(request.tel());
+
+        return mapToHotelDTo(repository.save(hotel));
+    }
+
+    private HotelResponse mapToHotelDTo(Hotel hotel){
+        return HotelResponse.fromEntity(hotel);
     }
 
 }

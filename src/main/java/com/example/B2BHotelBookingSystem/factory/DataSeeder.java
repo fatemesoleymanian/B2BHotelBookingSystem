@@ -1,7 +1,7 @@
-package com.example.demo.factory;
+package com.example.B2BHotelBookingSystem.factory;
 
-import com.example.demo.models.*;
-import com.example.demo.repositories.*;
+import com.example.B2BHotelBookingSystem.models.*;
+import com.example.B2BHotelBookingSystem.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,18 +17,15 @@ public class DataSeeder implements CommandLineRunner {
     // تزریق تمام ریپازیتوری‌های مورد نیاز
     private final HotelRepository hotelRepository;
     private final AgencyRepository agencyRepository;
-    private final ContractRepository contractRepository;
     private final RateRepository rateRepository;
     private final RoomRepository roomRepository;
 
     public DataSeeder(HotelRepository hotelRepository,
                       AgencyRepository agencyRepository,
-                      ContractRepository contractRepository,
                       RateRepository rateRepository,
                       RoomRepository roomRepository) {
         this.hotelRepository = hotelRepository;
         this.agencyRepository = agencyRepository;
-        this.contractRepository = contractRepository;
         this.rateRepository = rateRepository;
         this.roomRepository = roomRepository;
     }
@@ -72,16 +69,10 @@ public class DataSeeder implements CommandLineRunner {
 
         // ۳. ایجاد قرارداد و نرخ (Rate)
         for (Hotel hotel : hotels) {
-            // ایجاد ۱ قرارداد برای هر هتل
-            Contract contract = new Contract();
-            contract.setTitle("قرارداد سال ۲۰۲۵ - " + hotel.getName());
-            contract.setHotel(hotel);
-            Contract savedContract = contractRepository.save(contract);
 
             // ایجاد ۱ نرخ برای این هتل و قرارداد
             Rate rate = new Rate();
             rate.setHotel(hotel);
-            rate.setContract(savedContract);
             rate.setFrom(LocalDateTime.now());
             rate.setTo(LocalDateTime.now().plusMonths(6));
             rate.setDiscount(10.0f + random.nextFloat() * 20); // تخفیف تصادفی بین ۱۰ تا ۳۰

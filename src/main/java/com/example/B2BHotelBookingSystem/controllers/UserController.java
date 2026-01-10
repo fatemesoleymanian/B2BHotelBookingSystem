@@ -52,7 +52,6 @@ public class UserController extends BaseController{
     }
 
     //displaying edit form
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         var user = service.findUser(id);
@@ -67,7 +66,6 @@ public class UserController extends BaseController{
     }
 
     //update user
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/update")
     public String updateUser(@Valid @ModelAttribute("userRequest") UpdateUserRequest request,
                              BindingResult result) {

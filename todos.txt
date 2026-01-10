@@ -1,0 +1,4 @@
+-debug errors
+-agency ,room,hotel are created (model, repo, service, controller, dto)
+-all three needs ui
+-check if room_rates, room_inventory , reseration models are good and compelete

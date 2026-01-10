@@ -1,91 +1,43 @@
 package com.example.B2BHotelBookingSystem.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-@Table(name = "rates")
-public class Rate {
-
+@Entity @Getter @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@SQLDelete(sql = "UPDATE room_rates SET deleted_at = NOW() WHERE id = ?")
+@SQLRestriction("deleted_at IS NULL")
+@Table(name = "room_rates")
+public class Rate extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rate_gen")
     @SequenceGenerator(name = "rate_gen", sequenceName = "rate_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id")
-    private Hotel hotel;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id")
-    private Contract contract;
-
-    @ManyToMany(mappedBy = "rates")
-    private Set<Agency> agencies = new HashSet<>();
-
-    @Column(name = "valid_from", nullable = false)
-    private LocalDateTime from;
-
-    @Column(name = "valid_to", nullable = false)
-    private LocalDateTime to;
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     @Column(nullable = false)
-    private Float discount;
+    private LocalDateTime date;
 
-    public Contract getContract() {
-        return contract;
-    }
+    @Column(nullable = false)
+    private BigDecimal price;
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
-    }
+    @Column(name = "discount_percent")
+    private Integer discountPercent = 0;
 
-    public Set<Agency> getAgencies() {
-        return agencies;
-    }
-
-    public void setAgencies(Set<Agency> agencies) {
-        this.agencies = agencies;
-    }
-
-    public LocalDateTime getFrom() {
-        return from;
-    }
-
-    public void setFrom(LocalDateTime from) {
-        this.from = from;
-    }
-
-    public LocalDateTime getTo() {
-        return to;
-    }
-
-    public void setTo(LocalDateTime to) {
-        this.to = to;
-    }
-
-    public Float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Float discount) {
-        this.discount = discount;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
 
     @Override
     public boolean equals(Object o) {
