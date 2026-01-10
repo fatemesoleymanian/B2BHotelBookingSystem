@@ -90,7 +90,7 @@ public class RoomController extends BaseController{
     @GetMapping("/delete/{id}")
     public String deleteRoom(@PathVariable Long id) {
         service.deleteRoom(id);
-        return "redirect:/tooms";
+        return "redirect:/rooms";
     }
 
 }

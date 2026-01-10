@@ -2,9 +2,9 @@ package com.example.B2BHotelBookingSystem.controllers;
 
 
 import com.example.B2BHotelBookingSystem.config.exceptions.DynamicTextException;
-import com.example.B2BHotelBookingSystem.dtos.CreateRateRequest;
-import com.example.B2BHotelBookingSystem.dtos.UpdateRateRequest;
-import com.example.B2BHotelBookingSystem.services.RateService;
+import com.example.B2BHotelBookingSystem.dtos.CreateInventoryRequest;
+import com.example.B2BHotelBookingSystem.dtos.UpdateInventoryRequest;
+import com.example.B2BHotelBookingSystem.services.InventoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -13,39 +13,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/rates")
-public class RateController extends BaseController{
+@RequestMapping("/inventories")
+public class InventoryController extends BaseController{
 
-    private final RateService service;
+    private final InventoryService service;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
     @GetMapping("/create")
     public String showCreateForm(Model model){
-        model.addAttribute("rateRequest",
-                new CreateRateRequest(null, LocalDateTime.now(), LocalDateTime.now(), BigDecimal.ZERO,0));
-        return "rates/create";
+        model.addAttribute("inventoryRequest",
+                new CreateInventoryRequest(null, LocalDateTime.now(), LocalDateTime.now(), 0));
+        return "inventories/create";
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
     @PostMapping("/create")
-    public String createRate(@Valid @ModelAttribute("rateRequest") CreateRateRequest request,
+    public String createInventory(@Valid @ModelAttribute("inventoryRequest") CreateInventoryRequest request,
                              BindingResult result, Model model){
         if (result.hasErrors()) {
-            return "rates/create";
+            return "inventories/create";
         }
-        service.createRates(request);
-        return "redirect:/rates";
+        service.createInventories(request);
+        return "redirect:/inventories";
     }
 
     //has bug and should be fixed
     @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL') or hasRole('AGENCY')")
     @GetMapping
-    public String listRates(
+    public String listInventories(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "0") long roomId,
@@ -55,46 +54,46 @@ public class RateController extends BaseController{
         if (date == null && roomId.toString().equals("")) {
             throw new DynamicTextException("Please provide room or date");
         }else if (date == null){
-            //Show rates by roomId
-            model.addAttribute("ratesPage", service.findAllByRoomPaginated(roomId,
+            //Show inventories by roomId
+            model.addAttribute("inventoriesPage", service.findAllByRoomPaginated(roomId,
                     PageRequest.of(page, size)));
         } else if (roomId ?> 0) {
             throw new DynamicTextException("Please provide room");
 
         }else{
-            model.addAttribute("ratesPage", service.findAllByDateAndRoomPaginated(date, roomId,
+            model.addAttribute("inventoriesPage", service.findAllByDateAndRoomPaginated(date, roomId,
                     PageRequest.of(page, size)));
         }
-        return "rates/list";
+        return "inventories/list";
     }
 
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        var rate = service.findRate(id);
-        UpdateRateRequest request = new UpdateRateRequest(
-                rate.id(),rate.room().getId(), rate.price(), rate.discountPercent());
+        var inventory = service.findInventory(id);
+        UpdateInventoryRequest request = new UpdateInventoryRequest(
+                inventory.id(),inventory.room().getId(), inventory.quantity());
 
-        model.addAttribute("rateRequest", request);
-        return "rates/edit";
+        model.addAttribute("inventoryRequest", request);
+        return "inventories/edit";
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
     @PostMapping("/update")
-    public String updateRate(@Valid @ModelAttribute("rateRequest") UpdateRateRequest request,
+    public String updateInventory(@Valid @ModelAttribute("inventoryRequest") UpdateInventoryRequest request,
                              BindingResult result) {
         if (result.hasErrors()) {
-            return "rates/edit";
+            return "inventories/edit";
         }
-        service.updateRate(request);
-        return "redirect:/rates";
+        service.updateInventory(request);
+        return "redirect:/inventories";
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
     @GetMapping("/delete/{id}")
-    public String deleteRate(@PathVariable Long id) {
-        service.deleteRate(id);
-        return "redirect:/rates";
+    public String deleteInventory(@PathVariable Long id) {
+        service.deleteInventory(id);
+        return "redirect:/inventories";
     }
 }
