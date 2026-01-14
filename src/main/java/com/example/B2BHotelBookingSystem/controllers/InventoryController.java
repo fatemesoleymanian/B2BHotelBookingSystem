@@ -2,8 +2,8 @@ package com.example.B2BHotelBookingSystem.controllers;
 
 
 import com.example.B2BHotelBookingSystem.config.exceptions.DynamicTextException;
-import com.example.B2BHotelBookingSystem.dtos.CreateInventoryRequest;
-import com.example.B2BHotelBookingSystem.dtos.UpdateInventoryRequest;
+import com.example.B2BHotelBookingSystem.dtos.Availablity.CreateInventoryRequest;
+import com.example.B2BHotelBookingSystem.dtos.Availablity.UpdateInventoryRequest;
 import com.example.B2BHotelBookingSystem.services.InventoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.example.B2BHotelBookingSystem.controllers;
 
-import com.example.B2BHotelBookingSystem.dtos.CreateRoomRequest;
-import com.example.B2BHotelBookingSystem.dtos.UpdateRoomRequest;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.Room.CreateRoomRequest;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.Room.UpdateRoomRequest;
 import com.example.B2BHotelBookingSystem.services.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class RoomController extends BaseController{
     @GetMapping("/create")
     public String showCreateForm(Model model){
         model.addAttribute("roomRequest",
-                new CreateRoomRequest("", 0, 0, true, "",null));
+                new CreateRoomRequest("", 0, BigDecimal.ZERO, 0, true,null,null));
         return "rooms/create";
     }
 
@@ -48,12 +50,12 @@ public class RoomController extends BaseController{
             @RequestParam(defaultValue = "") String roomType,
             Model model
     ) {
-        if (roomType.isEmpty() && hotelId.toString().equals("")) {
+        if (roomType.isEmpty() && hotelId == 0) {
             model.addAttribute("roomsPage", service.findAllPaginated(PageRequest.of(page, size)));
         }else if (roomType.isEmpty()){
             //Show rooms by roomType
             model.addAttribute("roomsPage", service.findAllPaginatedByHotel(hotelId, PageRequest.of(page, size)));
-        } else if (hotelId ?> 0) {
+        } else if (hotelId >= 0) {
             model.addAttribute("roomsPage", service.findAllPaginatedByRoomType(roomType, PageRequest.of(page, size)));
         }else{
             model.addAttribute("roomsPage", service.findAllPaginatedByHotelAndRoomType(hotelId,roomType,
@@ -68,7 +70,7 @@ public class RoomController extends BaseController{
     public String showEditForm(@PathVariable Long id, Model model) {
         var room = service.findRoom(id);
         UpdateRoomRequest request = new UpdateRoomRequest(
-                room.id(),room.title(), room.mainCapacity(), room.childCapacity(),
+                room.id(),room.title(), room.mainCapacity(), room.childCapacity(),room.price(),
                 room.active(),room.roomType(), room.hotel().getId());
 
         model.addAttribute("roomRequest", request);

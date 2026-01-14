@@ -2,9 +2,9 @@ package com.example.B2BHotelBookingSystem.services;
 
 
 import com.example.B2BHotelBookingSystem.config.exceptions.NotFoundException;
-import com.example.B2BHotelBookingSystem.dtos.CreateInventoryRequest;
-import com.example.B2BHotelBookingSystem.dtos.InventoryResponse;
-import com.example.B2BHotelBookingSystem.dtos.UpdateInventoryRequest;
+import com.example.B2BHotelBookingSystem.dtos.Availablity.CreateInventoryRequest;
+import com.example.B2BHotelBookingSystem.dtos.Availablity.InventoryResponse;
+import com.example.B2BHotelBookingSystem.dtos.Availablity.UpdateInventoryRequest;
 import com.example.B2BHotelBookingSystem.models.Inventory;
 import com.example.B2BHotelBookingSystem.models.Room;
 import com.example.B2BHotelBookingSystem.repositories.InventoryRepository;

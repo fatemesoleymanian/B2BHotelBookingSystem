@@ -1,4 +1,4 @@
-package com.example.B2BHotelBookingSystem.dtos;
+package com.example.B2BHotelBookingSystem.dtos.Hotel;
 
 import com.example.B2BHotelBookingSystem.models.Hotel;
 import java.time.LocalDateTime;

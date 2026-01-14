@@ -9,9 +9,13 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity @Getter @Setter
@@ -35,15 +39,16 @@ public class Reservation extends BaseEntity{
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private ReserveStatus status;
-
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Room> rooms = new HashSet<>();
 
-    @OneToMany(mappedBy = "room_rate", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Rate> prices = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rate_id")
+    private Rate rate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private ReserveStatus status;
 
     @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
@@ -65,4 +70,14 @@ public class Reservation extends BaseEntity{
 
     @Column(length = 100)
     private String description;
+
+    @CreatedBy
+    @Column(updatable = false)
+    private String createdBy;
+
+    @LastModifiedBy
+    private String lastModifiedBy;
+
+    @Column(name = "transaction_id")
+    private Long transactionId;
 }

@@ -1,6 +1,6 @@
 package com.example.B2BHotelBookingSystem.controllers;
 
-import com.example.B2BHotelBookingSystem.dtos.ForgetPasswordRequest;
+import com.example.B2BHotelBookingSystem.dtos.User.Auth.ForgetPasswordRequest;
 import com.example.B2BHotelBookingSystem.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

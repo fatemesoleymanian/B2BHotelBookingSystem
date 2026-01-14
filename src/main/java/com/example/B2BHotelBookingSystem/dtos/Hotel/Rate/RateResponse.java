@@ -1,4 +1,4 @@
-package com.example.B2BHotelBookingSystem.dtos;
+package com.example.B2BHotelBookingSystem.dtos.Hotel.Rate;
 
 import com.example.B2BHotelBookingSystem.models.Rate;
 import com.example.B2BHotelBookingSystem.models.Room;

@@ -1,8 +1,8 @@
 package com.example.B2BHotelBookingSystem.controllers;
 
 
-import com.example.B2BHotelBookingSystem.dtos.CreateAgencyRequest;
-import com.example.B2BHotelBookingSystem.dtos.UpdateAgencyRequest;
+import com.example.B2BHotelBookingSystem.dtos.Agency.CreateAgencyRequest;
+import com.example.B2BHotelBookingSystem.dtos.Agency.UpdateAgencyRequest;
 import com.example.B2BHotelBookingSystem.services.AgencyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

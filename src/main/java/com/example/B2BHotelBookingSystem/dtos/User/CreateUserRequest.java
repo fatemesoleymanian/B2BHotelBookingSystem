@@ -1,13 +1,10 @@
-package com.example.B2BHotelBookingSystem.dtos;
+package com.example.B2BHotelBookingSystem.dtos.User;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 
-public record UpdateUserRequest(
+public record CreateUserRequest(
 
-        @NotNull(message = "Id is required.")
-        @Positive(message = "Id is not valid.")
-        Long id,
         @NotBlank(message = "Username is required.")
         @Size(max = 50, message = "Username must not exceed 50 characters.")
         String username,
@@ -22,12 +19,13 @@ public record UpdateUserRequest(
                 message = "Please provide a valid phone number.")
         String phone,
 
+        @NotBlank(message = "Password is required.")
         @Size(min = 8, message = "Password must be at least 8 characters long.")
         @Size(max = 20, message = "Password must not exceed 20 characters.")
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         String password,
 
-        @NotBlank(message = "Role is required.")
+        @NotNull(message = "Role is required.")
         String role,
 
         @NotNull(message = "Enabled flag must be provided.")

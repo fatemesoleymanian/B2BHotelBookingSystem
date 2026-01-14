@@ -25,18 +25,29 @@ public class Rate extends BaseEntity{
     @SequenceGenerator(name = "rate_gen", sequenceName = "rate_seq", allocationSize = 1)
     private Long id;
 
+    @Column(nullable = false)
+    private String title;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agency_id")
+    private Agency agency;
 
     @Column(nullable = false)
-    private LocalDateTime date;
+    private LocalDateTime from;
 
     @Column(nullable = false)
-    private BigDecimal price;
+    private LocalDateTime to;
 
-    @Column(name = "discount_percent")
-    private Integer discountPercent = 0;
+
+    @Column(name = "discount_percent", nullable = false)
+    private Integer discountPercent ;
+
+    @Column(name = "discount_amount", nullable = false)
+    private BigDecimal discountAmount;
 
 
     @Override

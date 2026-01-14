@@ -1,8 +1,9 @@
-package com.example.B2BHotelBookingSystem.dtos;
+package com.example.B2BHotelBookingSystem.dtos.Hotel.Room;
 
 import com.example.B2BHotelBookingSystem.models.Hotel;
 import com.example.B2BHotelBookingSystem.models.Room;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record RoomResponse(
@@ -11,6 +12,7 @@ public record RoomResponse(
         String title,
         Integer mainCapacity,
         Integer childCapacity,
+        BigDecimal price,
         Boolean active,
         String roomType,
         Hotel hotel,
@@ -23,6 +25,7 @@ public record RoomResponse(
                 room.getTitle(),
                 room.getMainCapacity(),
                 room.getChildCapacity(),
+                room.getPrice(),
                 room.getActive(),
                 room.getRoomType().name(),
                 room.getHotel() != null ? room.getHotel() : null,

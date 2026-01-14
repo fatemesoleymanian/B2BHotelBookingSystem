@@ -1,6 +1,8 @@
-package com.example.B2BHotelBookingSystem.dtos;
+package com.example.B2BHotelBookingSystem.dtos.Hotel.Room;
 
 import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
 
 public record UpdateRoomRequest(
         @NotNull(message = "Please provide unique id.")
@@ -21,6 +23,9 @@ public record UpdateRoomRequest(
         @NotNull(message = "Please provide child capacity of the room.")
         Integer childCapacity,
 
+        @NotNull(message = "Please provide price.")
+        @DecimalMin(value = "0.0", message = "Price cannot be negative.")
+        BigDecimal price,
         @NotNull(message = "Active flag must be provided.")
         Boolean active,
 

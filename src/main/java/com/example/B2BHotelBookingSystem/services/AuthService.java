@@ -3,7 +3,7 @@ package com.example.B2BHotelBookingSystem.services;
 
 import com.example.B2BHotelBookingSystem.config.exceptions.NotFoundException;
 import com.example.B2BHotelBookingSystem.config.utils.Utilities;
-import com.example.B2BHotelBookingSystem.dtos.ForgetPasswordRequest;
+import com.example.B2BHotelBookingSystem.dtos.User.Auth.ForgetPasswordRequest;
 import com.example.B2BHotelBookingSystem.models.User;
 import com.example.B2BHotelBookingSystem.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

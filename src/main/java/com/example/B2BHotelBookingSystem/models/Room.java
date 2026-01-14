@@ -7,6 +7,7 @@ import org.hibernate.annotations.Check;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,15 +45,16 @@ public class Room extends BaseEntity{
     @Column(nullable = false, length = 20, name = "room_type")
     private RoomType roomType;
 
+    @Column(nullable = false)
+    private BigDecimal price;//for those without contract
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Rate> rates = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Inventory> inventories = new ArrayList<>();
+    private List<Availablity> availablities = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

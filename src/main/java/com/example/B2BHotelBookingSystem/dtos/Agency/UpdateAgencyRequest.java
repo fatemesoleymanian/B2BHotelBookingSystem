@@ -1,4 +1,4 @@
-package com.example.B2BHotelBookingSystem.dtos;
+package com.example.B2BHotelBookingSystem.dtos.Agency;
 
 import jakarta.validation.constraints.*;
 

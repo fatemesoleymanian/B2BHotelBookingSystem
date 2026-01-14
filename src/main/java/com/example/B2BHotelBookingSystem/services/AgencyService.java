@@ -1,7 +1,9 @@
 package com.example.B2BHotelBookingSystem.services;
 
 import com.example.B2BHotelBookingSystem.config.exceptions.NotFoundException;
-import com.example.B2BHotelBookingSystem.dtos.*;
+import com.example.B2BHotelBookingSystem.dtos.Agency.AgencyResponse;
+import com.example.B2BHotelBookingSystem.dtos.Agency.CreateAgencyRequest;
+import com.example.B2BHotelBookingSystem.dtos.Agency.UpdateAgencyRequest;
 import com.example.B2BHotelBookingSystem.models.Agency;
 import com.example.B2BHotelBookingSystem.repositories.AgencyRepository;
 import lombok.RequiredArgsConstructor;

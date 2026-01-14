@@ -2,9 +2,9 @@ package com.example.B2BHotelBookingSystem.services;
 
 import com.example.B2BHotelBookingSystem.config.exceptions.DynamicTextException;
 import com.example.B2BHotelBookingSystem.config.exceptions.NotFoundException;
-import com.example.B2BHotelBookingSystem.dtos.CreateUserRequest;
-import com.example.B2BHotelBookingSystem.dtos.UpdateUserRequest;
-import com.example.B2BHotelBookingSystem.dtos.UserResponse;
+import com.example.B2BHotelBookingSystem.dtos.User.CreateUserRequest;
+import com.example.B2BHotelBookingSystem.dtos.User.UpdateUserRequest;
+import com.example.B2BHotelBookingSystem.dtos.User.UserResponse;
 import com.example.B2BHotelBookingSystem.models.Agency;
 import com.example.B2BHotelBookingSystem.models.Hotel;
 import com.example.B2BHotelBookingSystem.models.Role;

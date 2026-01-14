@@ -1,11 +1,9 @@
-package com.example.B2BHotelBookingSystem.dtos;
+package com.example.B2BHotelBookingSystem.dtos.Hotel;
 
 import jakarta.validation.constraints.*;
 
-public record UpdateHotelRequest(
-        @NotNull(message = "Please provide unique id.")
-        @Positive(message = "id must be positive")
-        Long id,
+
+public record CreateHotelRequest(
         @NotBlank(message = "Hotel name is required")
         @Size(min = 2, max = 100, message = "Hotel name must be between 2 and 100 characters")
         String name,
@@ -15,7 +13,6 @@ public record UpdateHotelRequest(
         @NotBlank(message = "City name is required")
         @Size(max = 30, message = "CityName must be at most 30 characters")
         String cityName,
-
         @NotNull @Min(value = 1, message = "Star can not be less than 0.")
         @Max(value = 5, message = "Star can not be greater than 5.")
         Integer star,

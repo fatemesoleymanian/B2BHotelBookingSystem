@@ -1,14 +1,13 @@
 package com.example.B2BHotelBookingSystem.services;
 
 import com.example.B2BHotelBookingSystem.config.exceptions.NotFoundException;
-import com.example.B2BHotelBookingSystem.dtos.CreateHotelRequest;
-import com.example.B2BHotelBookingSystem.dtos.HotelResponse;
-import com.example.B2BHotelBookingSystem.dtos.UpdateHotelRequest;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.CreateHotelRequest;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.HotelResponse;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.UpdateHotelRequest;
 import com.example.B2BHotelBookingSystem.models.Hotel;
 import com.example.B2BHotelBookingSystem.repositories.HotelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

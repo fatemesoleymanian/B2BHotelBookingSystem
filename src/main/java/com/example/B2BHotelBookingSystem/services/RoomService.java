@@ -1,7 +1,9 @@
 package com.example.B2BHotelBookingSystem.services;
 
 import com.example.B2BHotelBookingSystem.config.exceptions.NotFoundException;
-import com.example.B2BHotelBookingSystem.dtos.*;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.Room.CreateRoomRequest;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.Room.RoomResponse;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.Room.UpdateRoomRequest;
 import com.example.B2BHotelBookingSystem.models.Hotel;
 import com.example.B2BHotelBookingSystem.models.Room;
 import com.example.B2BHotelBookingSystem.models.RoomType;
@@ -70,6 +72,7 @@ public class RoomService {
         Room room = Room.builder()
                 .title(request.title()).mainCapacity(request.mainCapacity())
                 .childCapacity(request.childCapacity())
+                .price(request.price())
                 .roomType(RoomType.valueOf(request.roomType().toUpperCase()))
                 .active(request.active())
                 .hotel(hotel)
@@ -101,6 +104,7 @@ public class RoomService {
         room.setTitle(request.title());
         room.setMainCapacity(request.mainCapacity());
         room.setChildCapacity(request.childCapacity());
+        room.setPrice(request.price());
         room.setRoomType(RoomType.valueOf(request.roomType().toUpperCase()));
         room.setActive(request.active());
         room.setHotel(hotel);

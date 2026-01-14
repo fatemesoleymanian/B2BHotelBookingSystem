@@ -2,8 +2,7 @@ package com.example.B2BHotelBookingSystem.controllers;
 
 
 import com.example.B2BHotelBookingSystem.config.exceptions.DynamicTextException;
-import com.example.B2BHotelBookingSystem.dtos.CreateRateRequest;
-import com.example.B2BHotelBookingSystem.dtos.UpdateRateRequest;
+import com.example.B2BHotelBookingSystem.dtos.Hotel.Rate.CreateRateRequest;
 import com.example.B2BHotelBookingSystem.services.RateService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +21,13 @@ import java.time.LocalDateTime;
 public class RateController extends BaseController{
 
     private final RateService service;
+    //i'm not sure what methods we need
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
     @GetMapping("/create")
     public String showCreateForm(Model model){
         model.addAttribute("rateRequest",
-                new CreateRateRequest(null, LocalDateTime.now(), LocalDateTime.now(), BigDecimal.ZERO,0));
+                new CreateRateRequest("",null,null, LocalDateTime.now(), LocalDateTime.now(), BigDecimal.ZERO,0));
         return "rates/create";
     }
 
@@ -38,63 +38,23 @@ public class RateController extends BaseController{
         if (result.hasErrors()) {
             return "rates/create";
         }
-        service.createRates(request);
+        service.createRate(request);
         return "redirect:/rates";
     }
 
-    //has bug and should be fixed
     @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL') or hasRole('AGENCY')")
     @GetMapping
     public String listRates(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "0") long roomId,
-            @RequestParam(defaultValue = "") LocalDateTime date,
+            @RequestParam(defaultValue = "0") long agencyId,
+            @RequestParam(defaultValue = "0") long hotelId,
+            @RequestParam(defaultValue = "") LocalDateTime from,
+            @RequestParam(defaultValue = "") LocalDateTime to,
             Model model
     ) {
-        if (date == null && roomId.toString().equals("")) {
-            throw new DynamicTextException("Please provide room or date");
-        }else if (date == null){
-            //Show rates by roomId
-            model.addAttribute("ratesPage", service.findAllByRoomPaginated(roomId,
-                    PageRequest.of(page, size)));
-        } else if (roomId ?> 0) {
-            throw new DynamicTextException("Please provide room");
 
-        }else{
-            model.addAttribute("ratesPage", service.findAllByDateAndRoomPaginated(date, roomId,
-                    PageRequest.of(page, size)));
-        }
         return "rates/list";
     }
 
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        var rate = service.findRate(id);
-        UpdateRateRequest request = new UpdateRateRequest(
-                rate.id(),rate.room().getId(), rate.price(), rate.discountPercent());
-
-        model.addAttribute("rateRequest", request);
-        return "rates/edit";
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
-    @PostMapping("/update")
-    public String updateRate(@Valid @ModelAttribute("rateRequest") UpdateRateRequest request,
-                             BindingResult result) {
-        if (result.hasErrors()) {
-            return "rates/edit";
-        }
-        service.updateRate(request);
-        return "redirect:/rates";
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('HOTEL')")
-    @GetMapping("/delete/{id}")
-    public String deleteRate(@PathVariable Long id) {
-        service.deleteRate(id);
-        return "redirect:/rates";
-    }
 }

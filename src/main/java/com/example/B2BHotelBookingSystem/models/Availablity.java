@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE room_inventories SET deleted_at = NOW() WHERE id = ?")
+@SQLDelete(sql = "UPDATE availablities SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-@Table(name = "room_inventories")
-public class Inventory extends BaseEntity{
+@Table(name = "availablities")
+public class Availablity extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "inventory_gen")
-    @SequenceGenerator(name = "inventory_gen", sequenceName = "inventory_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "availablity_gen")
+    @SequenceGenerator(name = "availablity_gen", sequenceName = "availablity_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,17 +32,22 @@ public class Inventory extends BaseEntity{
     @Column(nullable = false)
     private LocalDateTime date;
 
-    @Column(nullable = false)
-    private Integer quantity;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private RoomStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20, name = "room_type")
+    private RoomType roomType;
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof Inventory)) return false;
+        if (!(o instanceof Availablity)) return false;
 
-        Inventory other = (Inventory) o;
+        Availablity other = (Availablity) o;
         return id != null && id.equals(other.getId());
     }
 

@@ -1,4 +1,4 @@
-package com.example.B2BHotelBookingSystem.dtos;
+package com.example.B2BHotelBookingSystem.dtos.User;
 
 import com.example.B2BHotelBookingSystem.models.User;
 
