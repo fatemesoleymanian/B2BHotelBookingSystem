@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class Agency extends BaseEntity{
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(length = 255)
+    @Column(length = 200)
     private String address;
 
     @Column(nullable = false, length = 50, name = "city_name")
@@ -39,4 +38,10 @@ public class Agency extends BaseEntity{
 
     @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rate> rates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 }

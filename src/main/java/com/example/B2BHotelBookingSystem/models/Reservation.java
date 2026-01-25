@@ -1,6 +1,7 @@
 package com.example.B2BHotelBookingSystem.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,8 +28,8 @@ import java.util.Set;
 @Table(name = "reservations")
 public class Reservation extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reserve_gen")
-    @SequenceGenerator(name = "reserve_gen", sequenceName = "reserve_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_gen")
+    @SequenceGenerator(name = "reservation_gen", sequenceName = "reservation_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,8 +40,8 @@ public class Reservation extends BaseEntity{
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Room> rooms = new HashSet<>();
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ReserveItem> items = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rate_id")
@@ -53,10 +54,10 @@ public class Reservation extends BaseEntity{
     @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private LocalDateTime from;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private LocalDateTime to;
 
     @Column(name = "guest_first_name", nullable = false, length = 50)

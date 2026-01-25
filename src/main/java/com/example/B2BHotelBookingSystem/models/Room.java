@@ -6,7 +6,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +54,10 @@ public class Room extends BaseEntity{
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Availablity> availablities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReserveItem> items = new ArrayList<>();
+
 
     @Override
     public boolean equals(Object o) {

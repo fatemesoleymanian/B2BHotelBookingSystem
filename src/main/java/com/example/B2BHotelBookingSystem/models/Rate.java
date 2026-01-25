@@ -8,17 +8,18 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity @Getter @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE room_rates SET deleted_at = NOW() WHERE id = ?")
+@SQLDelete(sql = "UPDATE rates SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-@Table(name = "room_rates")
+@Table(name = "rates")
 public class Rate extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rate_gen")
@@ -36,10 +37,13 @@ public class Rate extends BaseEntity{
     @JoinColumn(name = "agency_id")
     private Agency agency;
 
-    @Column(nullable = false)
+    @OneToMany(mappedBy = "rate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
+
+//    @Column(nullable = false)
     private LocalDateTime from;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private LocalDateTime to;
 
 

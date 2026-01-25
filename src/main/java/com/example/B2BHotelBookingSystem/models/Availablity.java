@@ -29,7 +29,7 @@ public class Availablity extends BaseEntity{
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)

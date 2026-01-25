@@ -3,6 +3,8 @@ package com.example.B2BHotelBookingSystem.models;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,9 +15,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @SuperBuilder
 public class BaseEntity implements Serializable {
-    @Column(updatable = false)
+    @CreatedDate
+//    @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
+//    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     private LocalDateTime deletedAt;
