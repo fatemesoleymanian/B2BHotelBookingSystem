@@ -1,6 +1,7 @@
 package com.example.B2BHotelBookingSystem.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,10 @@ import java.util.List;
 @Table(name = "rates")
 public class Rate extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rate_gen")
-    @SequenceGenerator(name = "rate_gen", sequenceName = "rate_seq", allocationSize = 1)
+    //appropriate for postgres
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rate_gen")
+    //@SequenceGenerator(name = "rate_gen", sequenceName = "rate_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -37,14 +40,14 @@ public class Rate extends BaseEntity{
     @JoinColumn(name = "agency_id")
     private Agency agency;
 
-    @OneToMany(mappedBy = "rate", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservation> reservations = new ArrayList<>();
+    @OneToMany(mappedBy = "rate")
+    private List<Reservation> reservations;
 
-//    @Column(nullable = false)
-    private LocalDateTime from;
+    @Column(nullable = false, name = "valid_from")
+    private LocalDate from;
 
-//    @Column(nullable = false)
-    private LocalDateTime to;
+    @Column(nullable = false, name = "valid_to")
+    private LocalDate to;
 
 
     @Column(name = "discount_percent", nullable = false)
@@ -52,6 +55,12 @@ public class Rate extends BaseEntity{
 
     @Column(name = "discount_amount", nullable = false)
     private BigDecimal discountAmount;
+
+
+    @AssertTrue
+    public boolean isDiscountValid() {
+        return (discountPercent != null) ^ (discountAmount != null);
+    }
 
 
     @Override

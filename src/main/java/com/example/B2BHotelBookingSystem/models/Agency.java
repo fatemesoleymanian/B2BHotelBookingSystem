@@ -20,8 +20,10 @@ import java.util.List;
 @Table(name = "agencies")
 public class Agency extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agency_gen")
-    @SequenceGenerator(name = "agency_gen", sequenceName = "agency_seq", allocationSize = 1)
+    //appropriate for postgres
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agency_gen")
+    //@SequenceGenerator(name = "agency_gen", sequenceName = "agency_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
@@ -36,12 +38,12 @@ public class Agency extends BaseEntity{
     @Column(length = 15)
     private String tel;
 
-    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL)
     private List<Rate> rates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL)
     private List<Reservation> reservations = new ArrayList<>();
 }

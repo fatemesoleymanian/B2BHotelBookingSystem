@@ -18,11 +18,18 @@ import java.util.List;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE rooms SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-@Table(name = "rooms")
+@Table(name = "rooms",
+        indexes = {
+                @Index(name = "idx_room_hotel", columnList = "hotel_id"),
+                @Index(name = "idx_room_active", columnList = "active"),
+                @Index(name = "idx_room_type", columnList = "room_type")
+        })
 public class Room extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_gen")
-    @SequenceGenerator(name = "room_gen", sequenceName = "room_seq", allocationSize = 1)
+    //appropriate for postgres
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_gen")
+    //@SequenceGenerator(name = "room_gen", sequenceName = "room_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
@@ -52,10 +59,10 @@ public class Room extends BaseEntity{
     private Hotel hotel;
 
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Availablity> availablities = new ArrayList<>();
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    private List<Availability> availabilities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<ReserveItem> items = new ArrayList<>();
 
 

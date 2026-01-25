@@ -22,11 +22,17 @@ import java.util.Set;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE hotels SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-@Table(name = "hotels")
+@Table(name = "hotels",
+        indexes = {
+                @Index(name = "idx_hotel_city", columnList = "city_name"),
+                @Index(name = "idx_hotel_deleted", columnList = "deleted_at")
+        })
 public class Hotel extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hotel_gen")
-    @SequenceGenerator(name = "hotel_gen", sequenceName = "hotel_seq",allocationSize = 1)
+    //appropriate for postgres
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hotel_gen")
+    //@SequenceGenerator(name = "hotel_gen", sequenceName = "hotel_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
@@ -45,8 +51,7 @@ public class Hotel extends BaseEntity{
     @Column(length = 15)
     private String tel;
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Room> rooms = new HashSet<>();it gets me error in creating table
-    private List<Room> rooms = new ArrayList<>();
+    private Set<Room> rooms = new HashSet<>();
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
@@ -54,7 +59,7 @@ public class Hotel extends BaseEntity{
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rate> rates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     private List<Reservation> reservations = new ArrayList<>();
 
     public void addRoom(Room room) {

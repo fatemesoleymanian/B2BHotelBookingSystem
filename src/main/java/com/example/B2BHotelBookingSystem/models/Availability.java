@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -16,21 +16,27 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE availablities SET deleted_at = NOW() WHERE id = ?")
+@Table(name = "availabilities",
+        indexes = {
+                @Index(name = "idx_av_room_date", columnList = "room_id, available_at"),
+                @Index(name = "idx_av_deleted", columnList = "deleted_at")
+        })
+@SQLDelete(sql = "UPDATE availabilities SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-@Table(name = "availablities")
-public class Availablity extends BaseEntity{
+public class Availability extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "availablity_gen")
-    @SequenceGenerator(name = "availablity_gen", sequenceName = "availablity_seq", allocationSize = 1)
+    //appropriate for postgres
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "availability_gen")
+    //@SequenceGenerator(name = "availability_gen", sequenceName = "availability_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
 
-//    @Column(nullable = false)
-    private LocalDateTime date;
+    @Column(name = "available_at", nullable = false)
+    private LocalDate availableAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -38,6 +44,7 @@ public class Availablity extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20, name = "room_type")
+    //For Performance
     private RoomType roomType;
 
 
@@ -45,9 +52,9 @@ public class Availablity extends BaseEntity{
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof Availablity)) return false;
+        if (!(o instanceof Availability)) return false;
 
-        Availablity other = (Availablity) o;
+        Availability other = (Availability) o;
         return id != null && id.equals(other.getId());
     }
 

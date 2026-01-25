@@ -22,8 +22,10 @@ import java.math.BigDecimal;
 @Table(name = "reserve_items")
 public class ReserveItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reserve_item_gen")
-    @SequenceGenerator(name = "reserve_item_gen", sequenceName = "reserve_item_seq", allocationSize = 1)
+    //appropriate for postgres
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reserve_item_gen")
+    //@SequenceGenerator(name = "reserve_item_gen", sequenceName = "reserve_item_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

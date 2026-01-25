@@ -1,7 +1,6 @@
 package com.example.B2BHotelBookingSystem.models;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,10 +12,8 @@ import org.hibernate.annotations.SQLRestriction;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity @Getter @Setter
@@ -25,11 +22,18 @@ import java.util.Set;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE reservations SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-@Table(name = "reservations")
+@Table(name = "reservations",
+        indexes = {
+                @Index(name = "idx_res_hotel", columnList = "hotel_id"),
+                @Index(name = "idx_res_agency", columnList = "agency_id"),
+                @Index(name = "idx_res_status", columnList = "status")
+        })
 public class Reservation extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_gen")
-    @SequenceGenerator(name = "reservation_gen", sequenceName = "reservation_seq", allocationSize = 1)
+    //appropriate for postgres
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_gen")
+    //@SequenceGenerator(name = "reservation_gen", sequenceName = "reservation_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,8 +44,8 @@ public class Reservation extends BaseEntity{
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<ReserveItem> items = new ArrayList<>();
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private Set<ReserveItem> items = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rate_id")
@@ -51,14 +55,14 @@ public class Reservation extends BaseEntity{
     @Column(nullable = false, length = 20)
     private ReserveStatus status;
 
-    @Column(name = "total_price", nullable = false)
-    private BigDecimal totalPrice;
+//    @Column(name = "total_price", nullable = false)
+//    private BigDecimal totalPrice;
 
-//    @Column(nullable = false)
-    private LocalDateTime from;
+    @Column(nullable = false,  name = "check_in")
+    private LocalDate from;
 
-//    @Column(nullable = false)
-    private LocalDateTime to;
+    @Column(nullable = false, name = "check_out")
+    private LocalDate to;
 
     @Column(name = "guest_first_name", nullable = false, length = 50)
     private String guestFirstName;
