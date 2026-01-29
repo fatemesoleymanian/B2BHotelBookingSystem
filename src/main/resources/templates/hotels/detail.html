@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+<h1 th:text="${hotel.name}">Hotel Name</h1>
+
+<p><strong>City:</strong> <span th:text="${hotel.cityName}"></span></p>
+<p><strong>Address:</strong> <span th:text="${hotel.address}"></span></p>
+<p><strong>Stars:</strong> <span th:text="${hotel.star}"></span></p>
+<p><strong>Tel:</strong> <span th:text="${hotel.tel}"></span></p>
+
+<hr>
+
+<h2>Rooms</h2>
+<table border="1">
+    <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Capacity</th>
+    </tr>
+    <tr th:each="room : ${hotel.rooms}">
+        <td th:text="${room.title}"></td>
+        <td th:text="${room.roomType}"></td>
+        <td th:text="${room.mainCapacity}"></td>
+    </tr>
+</table>
+
+<hr>
+
+<a th:href="@{/hotels}">Back to list</a>
+
+</div>
+</html>

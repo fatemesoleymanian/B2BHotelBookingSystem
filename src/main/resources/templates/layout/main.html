@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:replace="${title} ?: 'B2B System'">B2B</title>
+</head>
+<body>
+
+<!-- Header -->
+<div th:replace="fragments/header :: header"></div>
+
+<div style="display: flex; min-height: 80vh">
+
+    <!-- Sidebar -->
+    <div style="width: 220px">
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div style="flex: 1; padding: 20px">
+        <div th:replace="${content}"></div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

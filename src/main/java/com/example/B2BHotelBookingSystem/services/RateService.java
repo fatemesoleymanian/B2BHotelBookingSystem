@@ -23,67 +23,67 @@ import java.time.LocalDate;
 @Transactional
 public class RateService {
 
-    private final RateRepository repository;
-    private final HotelRepository hotelRepository;
-    private final AgencyRepository agencyRepository;
-
-    //i'm not sure what methods we need
-
-    @Transactional(readOnly = true)
-    public Page<RateResponse> findAllByHotelAndAgencyPaginated(Long hotelId, Long agencyId, Pageable pageable){
-        return repository.findAllByHotelAndAgency(hotelId, agencyId, pageable).map(RateResponse::fromEntity);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<RateResponse> findAllByHotelPaginated(Long hotelId, Pageable pageable){
-        return repository.findAllByHotel(hotelId, pageable).map(RateResponse::fromEntity);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<RateResponse> findAllByAgencyPaginated(Long agencyId, Pageable pageable){
-        return repository.findAllByAgency(agencyId, pageable).map(RateResponse::fromEntity);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<RateResponse> findAllByFromGreaterThanPaginated(LocalDate from, Pageable pageable){
-        return repository.findAllByFromGreaterThan(from,pageable).map(RateResponse::fromEntity);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<RateResponse> findAllByToLessThanPaginated(LocalDate to, Pageable pageable){
-        return repository.findAllByToLessThan(to,pageable).map(RateResponse::fromEntity);
-    }
-
-    public RateResponse findRate(Long id){
-        Rate rate = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(id, "Rate "));
-        return RateResponse.fromEntity(rate);
-    }
-
-    @Transactional
-    public void createRate(CreateRateRequest request){
-
-        Hotel hotel = hotelRepository.findById(request.hotelId())
-                .orElseThrow(() -> new NotFoundException(request.hotelId(), "Hotel "));
-
-        Agency agency = agencyRepository.findById(request.agencyId())
-                .orElseThrow(() -> new NotFoundException(request.agencyId(), "Agency "));
-
-        if (request.discountAmount() == null && request.discountPercent() == null){
-            throw new DynamicTextException("Please provide one type of discount.(rates without discount considered as basic price.");
-        }
-        Rate rate = Rate.builder()
-                .title(request.title())
-                .hotel(hotel).agency(agency).from(request.from())
-                .to(request.to())
-                .discountPercent(request.discountPercent())
-                .discountAmount(request.discountAmount())
-                        .build();
-        repository.save(rate);
-    }
-
-    private RateResponse mapToRateDTo(Rate rate){
-        return RateResponse.fromEntity(rate);
-    }
+//    private final RateRepository repository;
+//    private final HotelRepository hotelRepository;
+//    private final AgencyRepository agencyRepository;
+//
+//    //i'm not sure what methods we need
+//
+//    @Transactional(readOnly = true)
+//    public Page<RateResponse> findAllByHotelAndAgencyPaginated(Long hotelId, Long agencyId, Pageable pageable){
+//        return repository.findAllByHotelAndAgency(hotelId, agencyId, pageable).map(RateResponse::fromEntity);
+//    }
+//
+//    @Transactional(readOnly = true)
+//    public Page<RateResponse> findAllByHotelPaginated(Long hotelId, Pageable pageable){
+//        return repository.findAllByHotel(hotelId, pageable).map(RateResponse::fromEntity);
+//    }
+//
+//    @Transactional(readOnly = true)
+//    public Page<RateResponse> findAllByAgencyPaginated(Long agencyId, Pageable pageable){
+//        return repository.findAllByAgency(agencyId, pageable).map(RateResponse::fromEntity);
+//    }
+//
+//    @Transactional(readOnly = true)
+//    public Page<RateResponse> findAllByFromGreaterThanPaginated(LocalDate from, Pageable pageable){
+//        return repository.findAllByFromGreaterThan(from,pageable).map(RateResponse::fromEntity);
+//    }
+//
+//    @Transactional(readOnly = true)
+//    public Page<RateResponse> findAllByToLessThanPaginated(LocalDate to, Pageable pageable){
+//        return repository.findAllByToLessThan(to,pageable).map(RateResponse::fromEntity);
+//    }
+//
+//    public RateResponse findRate(Long id){
+//        Rate rate = repository.findById(id)
+//                .orElseThrow(() -> new NotFoundException(id, "Rate "));
+//        return RateResponse.fromEntity(rate);
+//    }
+//
+//    @Transactional
+//    public void createRate(CreateRateRequest request){
+//
+//        Hotel hotel = hotelRepository.findById(request.hotelId())
+//                .orElseThrow(() -> new NotFoundException(request.hotelId(), "Hotel "));
+//
+//        Agency agency = agencyRepository.findById(request.agencyId())
+//                .orElseThrow(() -> new NotFoundException(request.agencyId(), "Agency "));
+//
+//        if (request.discountAmount() == null && request.discountPercent() == null){
+//            throw new DynamicTextException("Please provide one type of discount.(rates without discount considered as basic price.");
+//        }
+//        Rate rate = Rate.builder()
+//                .title(request.title())
+//                .hotel(hotel).agency(agency).from(request.from())
+//                .to(request.to())
+//                .discountPercent(request.discountPercent())
+//                .discountAmount(request.discountAmount())
+//                        .build();
+//        repository.save(rate);
+//    }
+//
+//    private RateResponse mapToRateDTo(Rate rate){
+//        return RateResponse.fromEntity(rate);
+//    }
 
 }

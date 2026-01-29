@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+<h1>Agencies</h1>
+
+<form method="get" th:action="@{/agencies}">
+    <input type="text" name="city" placeholder="City"
+           th:value="${param.city}">
+    <button type="submit">Search</button>
+</form>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>City</th>
+        <th>Tel</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="agency : ${agencies}">
+        <td th:text="${agency.name}"></td>
+        <td th:text="${agency.cityName}"></td>
+        <td th:text="${agency.tel}"></td>
+        <td>
+            <a th:href="@{/agencies/{id}(id=${agency.id})}">Details</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</div>
+</html>

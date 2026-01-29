@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+    <h1>Rooms</h1>
+
+    <a th:href="@{/rooms/create}">Create Room</a>
+
+    <table border="1" cellpadding="8">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Room Type</th>
+            <th>Main Capacity</th>
+            <th>Child Capacity</th>
+            <th>Price</th>
+            <th>Active</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="room : ${rooms}">
+            <td th:text="${room.id}"></td>
+            <td th:text="${room.title}"></td>
+            <td th:text="${room.roomType}"></td>
+            <td th:text="${room.mainCapacity}"></td>
+            <td th:text="${room.childCapacity}"></td>
+            <td th:text="${room.price}"></td>
+            <td th:text="${room.active}"></td>
+            <td>
+                <a th:href="@{/rooms/{id}/edit(id=${room.id})}">Edit</a> |
+                <a th:href="@{/rooms/{id}/availability(id=${room.id})}">Availability</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</html>

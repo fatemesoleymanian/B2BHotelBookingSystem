@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+    <h1>Edit Rate</h1>
+
+    <form th:action="@{/rates/edit/{id}(id=${rate.id})}" method="post"
+          th:object="${rate}">
+
+        <p><strong>Hotel:</strong> <span th:text="${rate.hotel.name}"></span></p>
+        <p><strong>Agency:</strong> <span th:text="${rate.agency.name}"></span></p>
+
+        <label>From</label><br>
+        <input type="date" th:field="*{from}"><br><br>
+
+        <label>To</label><br>
+        <input type="date" th:field="*{to}"><br><br>
+
+        <label>Price</label><br>
+        <input type="number" th:field="*{price}"><br><br>
+
+        <button type="submit">Update</button>
+    </form>
+
+</div>
+</html>

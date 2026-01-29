@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/auth/login?logout=true")
                 )
                 .exceptionHandling(ex -> ex
-                        .accessDeniedPage("/errors/403")
+                        .accessDeniedPage("/auth/access-denied")
                 );
 
         return http.build();

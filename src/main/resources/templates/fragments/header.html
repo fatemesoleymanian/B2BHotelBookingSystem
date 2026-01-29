@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="header">
+    <header>
+        <h2>B2B Hotel Booking System</h2>
+
+        <div>
+            <span th:text="${#authentication.name}">username</span>
+            |
+            <a th:href="@{/logout}">Logout</a>
+        </div>
+
+        <hr>
+    </header>
+</div>
+
+</body>
+</html>

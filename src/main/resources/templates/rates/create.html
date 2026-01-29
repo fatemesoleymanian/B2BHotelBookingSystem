@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+    <h1>Create Rate</h1>
+
+    <form th:action="@{/rates/create}" method="post" th:object="${rate}">
+
+        <label>Hotel</label><br>
+        <select th:field="*{hotel.id}">
+            <option th:each="hotel : ${hotels}"
+                    th:value="${hotel.id}"
+                    th:text="${hotel.name}">
+            </option>
+        </select><br><br>
+
+        <label>Agency</label><br>
+        <select th:field="*{agency.id}">
+            <option th:each="agency : ${agencies}"
+                    th:value="${agency.id}"
+                    th:text="${agency.name}">
+            </option>
+        </select><br><br>
+
+        <label>From</label><br>
+        <input type="date" th:field="*{from}"><br><br>
+
+        <label>To</label><br>
+        <input type="date" th:field="*{to}"><br><br>
+
+        <label>Price</label><br>
+        <input type="number" th:field="*{price}"><br><br>
+
+        <button type="submit">Save</button>
+    </form>
+
+</div>
+</html>

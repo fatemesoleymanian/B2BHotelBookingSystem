@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+    <h1>Rates</h1>
+
+    <a th:href="@{/rates/create}">Create New Rate</a>
+
+    <table border="1" cellpadding="8">
+        <thead>
+        <tr>
+            <th>Hotel</th>
+            <th>Agency</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="rate : ${rates}">
+            <td th:text="${rate.hotel.name}"></td>
+            <td th:text="${rate.agency.name}"></td>
+            <td th:text="${rate.from}"></td>
+            <td th:text="${rate.to}"></td>
+            <td th:text="${rate.price}"></td>
+            <td>
+                <a th:href="@{/rates/edit/{id}(id=${rate.id})}">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</html>

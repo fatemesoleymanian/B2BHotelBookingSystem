@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+<h1>Agency Dashboard</h1>
+
+<div class="stats">
+    <div>
+        <h3>My Reservations</h3>
+        <span th:text="${reservationCount}">0</span>
+    </div>
+
+    <div>
+        <h3>Active Rates</h3>
+        <span th:text="${activeRates}">0</span>
+    </div>
+
+    <div>
+        <h3>Upcoming Check-ins</h3>
+        <span th:text="${upcomingCheckins}">0</span>
+    </div>
+</div>
+
+<hr>
+
+<h2>Actions</h2>
+<ul>
+    <li><a th:href="@{/reservations/new}">New Reservation</a></li>
+    <li><a th:href="@{/reservations}">My Reservations</a></li>
+    <li><a th:href="@{/rates}">View Rates</a></li>
+</ul>
+
+</div>
+</html>

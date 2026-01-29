@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
-    public Page<Hotel> findByCityNameContainingIgnoreCase(String cityName, Pageable pageable);
+     Page<Hotel> findByCityNameContainingIgnoreCase(String cityName, Pageable pageable);
 
 }

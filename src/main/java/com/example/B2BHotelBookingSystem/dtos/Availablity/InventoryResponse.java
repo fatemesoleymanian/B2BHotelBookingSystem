@@ -1,6 +1,6 @@
 package com.example.B2BHotelBookingSystem.dtos.Availablity;
 
-import com.example.B2BHotelBookingSystem.models.Availablity;
+import com.example.B2BHotelBookingSystem.models.Availability;
 import com.example.B2BHotelBookingSystem.models.Room;
 import java.time.LocalDateTime;
 
@@ -10,11 +10,11 @@ public record InventoryResponse(
         LocalDateTime date,
         String status
 ) {
-    public static InventoryResponse fromEntity(Availablity inventory) {
+    public static InventoryResponse fromEntity(Availability inventory) {
         return new InventoryResponse(
             inventory.getId(),
             inventory.getRoom(),
-            inventory.getDate(),
+            inventory.getCreatedAt(),
             inventory.getStatus().name()
         );
     }

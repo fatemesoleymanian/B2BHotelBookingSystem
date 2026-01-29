@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+    <h1>Reservations</h1>
+
+    <a th:href="@{/reservations/create}">Create Reservation</a>
+
+    <table border="1" cellpadding="8">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Hotel</th>
+            <th>Agency</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="res : ${reservations}">
+            <td th:text="${res.id}"></td>
+            <td th:text="${res.hotel.name}"></td>
+            <td th:text="${res.agency.name}"></td>
+            <td th:text="${res.from}"></td>
+            <td th:text="${res.to}"></td>
+            <td th:text="${res.status}"></td>
+            <td>
+                <a th:href="@{/reservations/{id}(id=${res.id})}">View</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+    <h1>Confirm Reservation</h1>
+
+    <h3>Reservation Summary</h3>
+
+    <p><strong>Hotel:</strong> <span th:text="${reservation.hotel.name}"></span></p>
+    <p><strong>Room Type:</strong> <span th:text="${reservation.roomType}"></span></p>
+    <p><strong>From:</strong> <span th:text="${reservation.from}"></span></p>
+    <p><strong>To:</strong> <span th:text="${reservation.to}"></span></p>
+
+    <hr>
+
+    <h3>Pricing</h3>
+
+    <p>
+        <strong>Rate Source:</strong>
+        <span th:text="${reservation.rate != null ? 'Contract Rate' : 'Room Price'}"></span>
+    </p>
+
+    <p>
+        <strong>Total Price:</strong>
+        <span th:text="${reservation.totalPrice}"></span>
+    </p>
+
+    <form th:action="@{/reservations/save}" method="post">
+        <input type="hidden" name="token" th:value="${confirmToken}">
+        <button type="submit">Confirm Reservation</button>
+    </form>
+
+    <br>
+    <a th:href="@{/reservations/create}">Cancel</a>
+
+</div>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+<h1>Admin Dashboard</h1>
+
+<div class="stats">
+    <div>
+        <h3>Total Hotels</h3>
+        <span th:text="${hotelCount}">0</span>
+    </div>
+
+    <div>
+        <h3>Total Agencies</h3>
+        <span th:text="${agencyCount}">0</span>
+    </div>
+
+    <div>
+        <h3>Total Reservations</h3>
+        <span th:text="${reservationCount}">0</span>
+    </div>
+</div>
+
+<hr>
+
+<h2>Quick Actions</h2>
+<ul>
+    <li><a th:href="@{/hotels}">Manage Hotels</a></li>
+    <li><a th:href="@{/agencies}">Manage Agencies</a></li>
+    <li><a th:href="@{/users}">Manage Users</a></li>
+    <li><a th:href="@{/reservations}">View Reservations</a></li>
+</ul>
+
+</div>
+</html>

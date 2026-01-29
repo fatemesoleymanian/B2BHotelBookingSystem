@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+    <h1>Room Availability</h1>
+
+    <p>
+        <strong>Room:</strong> <span th:text="${room.title}"></span> |
+        <strong>Type:</strong> <span th:text="${room.roomType}"></span>
+    </p>
+
+    <table border="1" cellpadding="8">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Room Type</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="av : ${availabilities}">
+            <td th:text="${#temporals.format(av.date, 'yyyy-MM-dd')}"></td>
+            <td th:text="${av.status}"></td>
+            <td th:text="${av.roomType}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a th:href="@{/rooms}">Back to Rooms</a>
+
+</div>
+</html>

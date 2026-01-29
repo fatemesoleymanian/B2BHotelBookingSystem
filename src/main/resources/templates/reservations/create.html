@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout/main :: body">
+
+<div th:fragment="content">
+
+    <h1>Create Reservation</h1>
+
+    <form th:action="@{/reservations/confirm}" method="post"
+          th:object="${reservationRequest}">
+
+        <label>Hotel</label><br>
+        <select th:field="*{hotelId}">
+            <option th:each="hotel : ${hotels}"
+                    th:value="${hotel.id}"
+                    th:text="${hotel.name}">
+            </option>
+        </select><br><br>
+
+        <label>Room Type</label><br>
+        <select th:field="*{roomType}">
+            <option th:each="type : ${roomTypes}"
+                    th:value="${type}"
+                    th:text="${type}">
+            </option>
+        </select><br><br>
+
+        <label>From</label><br>
+        <input type="date" th:field="*{from}"><br><br>
+
+        <label>To</label><br>
+        <input type="date" th:field="*{to}"><br><br>
+
+        <label>Guest Name</label><br>
+        <input type="text" th:field="*{guestName}"><br><br>
+
+        <label>Guest Phone</label><br>
+        <input type="text" th:field="*{guestPhoneNumber}"><br><br>
+
+        <button type="submit">Check Availability</button>
+
+    </form>
+
+</div>
+</html>

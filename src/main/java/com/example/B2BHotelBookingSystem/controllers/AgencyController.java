@@ -73,7 +73,7 @@ public class AgencyController extends BaseController{
     public String updateAgency(@Valid @ModelAttribute("AgencyRequest") UpdateAgencyRequest request,
                               BindingResult result) {
         if (result.hasErrors()) {
-            return "agencies/edit";
+            return "agencies/detail";
         }
         service.updateAgency(request);
         return "redirect:/agencies";
