@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AgencyRepository extends JpaRepository<Agency,Long> {
      Page<Agency> findByCityNameContainingIgnoreCase(String cityName, Pageable pageable);
+     boolean existsByNameIgnoreCase(String name);
 
 }

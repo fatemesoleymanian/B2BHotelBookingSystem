@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Agency</title>
+</head>
+<body>
+
+<th:block th:replace="layout/main :: layout(~{::content})">
+
+    <th:block th:fragment="content">
+
+        <h1>Create Agency</h1>
+
+        <form th:action="@{/agencies/create}"
+              th:object="${agency}"
+              method="post">
+
+            <div>
+                <label>Name</label>
+                <input type="text" th:field="*{name}">
+                <div th:errors="*{name}"></div>
+            </div>
+
+            <div>
+                <label>City</label>
+                <input type="text" th:field="*{cityName}">
+                <div th:errors="*{cityName}"></div>
+            </div>
+
+            <div>
+                <label>Address</label>
+                <input type="text" th:field="*{address}">
+                <div th:errors="*{address}"></div>
+            </div>
+
+            <div>
+                <label>Tel</label>
+                <input type="text" th:field="*{tel}">
+                <div th:errors="*{tel}"></div>
+            </div>
+
+            <button type="submit">Create</button>
+            <a th:href="@{/agencies}">Cancel</a>
+
+        </form>
+
+    </th:block>
+
+</th:block>
+
+</body>
+</html>

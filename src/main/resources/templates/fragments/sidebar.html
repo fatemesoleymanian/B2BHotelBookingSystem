@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
-
 <div th:fragment="sidebar">
     <nav>
         <ul>
             <li><a th:href="@{/admin}">Dashboard</a></li>
 
-            <li><strong>Hotels</strong></li>
             <li><a th:href="@{/hotels}">Hotels List</a></li>
 
-            <li><strong>Agencies</strong></li>
             <li><a th:href="@{/agencies}">Agencies List</a></li>
 
-            <li><strong>Reservations</strong></li>
             <li><a th:href="@{/reservations}">Reservations</a></li>
         </ul>
     </nav>
 </div>
-
-</body>
-</html>

@@ -1,7 +1,7 @@
 package com.example.B2BHotelBookingSystem.dtos.Reserve;
 
 import com.example.B2BHotelBookingSystem.models.*;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -12,9 +12,9 @@ public record ReservationResponse(
          ReserveStatus status,
          Set<ReserveItem> rooms,
          Long rateId,
-         BigDecimal totalPrice,
-         LocalDateTime from,
-         LocalDateTime to,
+//         BigDecimal totalPrice,
+         LocalDate from,
+         LocalDate to,
          String guestFirstName,
          String guestLastName,
          String guestPhoneNumber,
@@ -32,7 +32,7 @@ public record ReservationResponse(
                 reserve.getStatus(),
                 reserve.getItems(),
                 reserve.getRate().getId(),
-                reserve.getTotalPrice(),
+//                reserve.getTotalPrice(),
                 reserve.getFrom(),
                 reserve.getTo(),
                 reserve.getGuestFirstName(),

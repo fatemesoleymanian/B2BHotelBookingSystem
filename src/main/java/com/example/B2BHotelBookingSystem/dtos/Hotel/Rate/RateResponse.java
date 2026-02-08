@@ -4,15 +4,15 @@ import com.example.B2BHotelBookingSystem.models.Agency;
 import com.example.B2BHotelBookingSystem.models.Hotel;
 import com.example.B2BHotelBookingSystem.models.Rate;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record RateResponse(
         Long id,
         String title,
         Hotel hotel,
         Agency agency,
-        LocalDateTime from,
-        LocalDateTime date,
+        LocalDate from,
+        LocalDate date,
         Integer discountPercent,
         BigDecimal discountAmount
 ) {

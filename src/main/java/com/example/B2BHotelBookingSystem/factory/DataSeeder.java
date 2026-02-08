@@ -3,31 +3,31 @@ package com.example.B2BHotelBookingSystem.factory;
 import com.example.B2BHotelBookingSystem.models.*;
 import com.example.B2BHotelBookingSystem.repositories.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 //@Component
 public class DataSeeder implements CommandLineRunner {
 
     // تزریق تمام ریپازیتوری‌های مورد نیاز
-    private final HotelRepository hotelRepository;
-    private final AgencyRepository agencyRepository;
-    private final RateRepository rateRepository;
-    private final RoomRepository roomRepository;
+//    private final HotelRepository hotelRepository;
+//    private final AgencyRepository agencyRepository;
+//    private final RateRepository rateRepository;
+//    private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
 
-    public DataSeeder(HotelRepository hotelRepository,
-                      AgencyRepository agencyRepository,
-                      RateRepository rateRepository,
-                      RoomRepository roomRepository) {
-        this.hotelRepository = hotelRepository;
-        this.agencyRepository = agencyRepository;
-        this.rateRepository = rateRepository;
-        this.roomRepository = roomRepository;
+    private final PasswordEncoder encoder;
+
+    //
+    public DataSeeder(UserRepository userRepository, PasswordEncoder encoder) {
+//        this.hotelRepository = hotelRepository;
+//        this.agencyRepository = agencyRepository;
+//        this.rateRepository = rateRepository;
+//        this.roomRepository = roomRepository;
+        this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     @Override
@@ -91,7 +91,15 @@ public class DataSeeder implements CommandLineRunner {
 //                agencyRepository.save(randomAgency);
 //            }
 //        }
+        User user = new User();
+
+        user.setUsername("testHotel@gmail.com");
+        user.setEmail("testHotel@gmail.com");
+        user.setRole(Role.HOTEL);
+        user.setPassword(encoder.encode("123456"));
+
+        userRepository.save(user);
 //
-//        System.out.println("✅ دیتای فیک با موفقیت و رعایت ترتیب روابط ذخیره شد.");
+        System.out.println("✅ دیتای فیک با موفقیت و رعایت ترتیب روابط ذخیره شد.");
     }
 }

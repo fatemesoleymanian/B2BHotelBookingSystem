@@ -1,6 +1,7 @@
 package com.example.B2BHotelBookingSystem.controllers;
 
 
+import com.example.B2BHotelBookingSystem.dtos.Agency.AgencyResponse;
 import com.example.B2BHotelBookingSystem.dtos.Agency.CreateAgencyRequest;
 import com.example.B2BHotelBookingSystem.dtos.Agency.UpdateAgencyRequest;
 import com.example.B2BHotelBookingSystem.services.AgencyService;
@@ -8,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,17 +25,24 @@ public class AgencyController extends BaseController{
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/create")
-    public String showCreateForm(Model model){
-        model.addAttribute("agencyRequest",
-                new CreateAgencyRequest("", "", "", ""));
+    public String showCreateForm(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getPrincipal().getClass());
+        System.out.println(auth.getPrincipal());
+
+        model.addAttribute("agency",
+                new CreateAgencyRequest(null, null, null, null));
         return "agencies/create";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public String createAgency(@Valid @ModelAttribute("agencyRequest") CreateAgencyRequest request,
-                              BindingResult result, Model model){
+    public String createAgency(
+            @Valid @ModelAttribute("agency") CreateAgencyRequest request,
+            BindingResult result
+    ) {
         if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
             return "agencies/create";
         }
         service.createAgency(request);
@@ -47,33 +57,50 @@ public class AgencyController extends BaseController{
             @RequestParam(defaultValue = "") String city,
             Model model
     ) {
-        if (city.isEmpty()) {
-            model.addAttribute("agenciesPage", service.findAllPaginated(PageRequest.of(page, size)));
-        }else {
-            //Show agencies by city
-            model.addAttribute("agenciesPage", service.findAllPaginatedByCity(city, PageRequest.of(page, size)));
+        if (city.isBlank()) {
+            model.addAttribute("agencies",
+                    service.findAllPaginated(PageRequest.of(page, size)));
+        } else {
+            model.addAttribute("agencies",
+                    service.findAllPaginatedByCity(city, PageRequest.of(page, size)));
         }
         return "agencies/list";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("{id}")
+    public String findAgency(@PathVariable @Valid Long id, Model model) {
+            model.addAttribute("agency",
+                    service.findAgency(id));
+        return "agencies/detail";
     }
 
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('AGENCY')")
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        var Agency = service.findAgency(id);
-        UpdateAgencyRequest request = new UpdateAgencyRequest(
-                Agency.id(), Agency.name(),Agency.address(), Agency.cityName(), Agency.tel());
+        AgencyResponse agency = service.findAgency(id);
 
-        model.addAttribute("agencyRequest", request);
+        model.addAttribute("agency",
+                new UpdateAgencyRequest(
+                        agency.id(),
+                        agency.name(),
+                        agency.address(),
+                        agency.cityName(),
+                        agency.tel()
+                )
+        );
         return "agencies/edit";
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('AGENCY')")
     @PostMapping("/update")
-    public String updateAgency(@Valid @ModelAttribute("AgencyRequest") UpdateAgencyRequest request,
-                              BindingResult result) {
+    public String updateAgency(
+            @Valid @ModelAttribute("agency") UpdateAgencyRequest request,
+            BindingResult result
+    ) {
         if (result.hasErrors()) {
-            return "agencies/detail";
+            return "agencies/edit";
         }
         service.updateAgency(request);
         return "redirect:/agencies";

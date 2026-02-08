@@ -10,6 +10,8 @@
     <input type="text" name="city" placeholder="City"
            th:value="${param.city}">
     <button type="submit">Search</button>
+    <a th:href="@{/agencies/create}">Create Agency</a>
+
 </form>
 
 <table border="1">
@@ -28,6 +30,8 @@
         <td th:text="${agency.tel}"></td>
         <td>
             <a th:href="@{/agencies/{id}(id=${agency.id})}">Details</a>
+            <a th:href="@{/agencies/delete/{id}(id=${agency.id})}">Delete</a>
+            <a th:href="@{/agencies/edit/{id}(id=${agency.id})}">Edit</a>
         </td>
     </tr>
     </tbody>
